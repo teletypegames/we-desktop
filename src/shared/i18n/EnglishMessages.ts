@@ -92,6 +92,7 @@ export const ENGLISH_MESSAGES = {
   checkingForUpdates: 'Checking…',
   clientUpToDate: 'This is the latest version.',
   clientUpdateAvailable: 'Version %{version} is available.',
+  forkOf: 'Fork of %{name} (%{engine})',
   downloadUpdate: 'Get %{version}',
   updateCheckFailed: 'The release list could not be reached.',
   settings: 'Settings',

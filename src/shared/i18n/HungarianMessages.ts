@@ -92,6 +92,7 @@ export const HUNGARIAN_MESSAGES: MessageBundle = {
   checkingForUpdates: 'Keresés…',
   clientUpToDate: 'Ez a legújabb verzió.',
   clientUpdateAvailable: 'Elérhető a %{version} verzió.',
+  forkOf: 'Ebből forkolták: %{name} (%{engine})',
   downloadUpdate: '%{version} letöltése',
   updateCheckFailed: 'A kiadások listája nem érhető el.',
   settings: 'Beállítások',

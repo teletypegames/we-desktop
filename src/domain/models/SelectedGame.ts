@@ -1,4 +1,5 @@
 import type { CatalogAccess } from './CatalogAccess'
+import type { ForkParent } from './ForkParent'
 import type { UnavailableReason } from './Game'
 
 /**
@@ -26,6 +27,8 @@ export interface SelectedGame {
   readonly category: string | null
   readonly imageUrl: string | null
   readonly createdAt: string | null
+  /** The title this one was forked from, or null. */
+  readonly forkOf: ForkParent | null
   /** `app` for a native archive, `web` for a hosted page. */
   readonly mode: string
   /** What the catalog says about getting it; null from an engine that cannot say. */
@@ -49,6 +52,7 @@ export interface UnavailableEntry {
   readonly category: string | null
   readonly imageUrl: string | null
   readonly version: string
+  readonly forkOf: ForkParent | null
   readonly reason: UnavailableReason
   /** The sentence behind the code, for a tooltip or the log. */
   readonly detail: string

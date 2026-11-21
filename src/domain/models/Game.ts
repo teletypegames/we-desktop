@@ -1,4 +1,5 @@
 import type { CatalogAccess } from './CatalogAccess'
+import type { ForkParent } from './ForkParent'
 
 /** How a title runs: unpacked on this machine, or served as a web build. */
 export type GameMode = 'app' | 'web'
@@ -35,6 +36,8 @@ export interface Game {
   readonly categoryLabel: string | null
   /** Relative to the catalog's base URL, as published. */
   readonly imagePath: string | null
+  /** The title this one was forked from, or null where it is none or the engine cannot say. */
+  readonly forkOf: ForkParent | null
   readonly installed: boolean
   readonly updateAvailable: boolean
   readonly installedVersion: string | null

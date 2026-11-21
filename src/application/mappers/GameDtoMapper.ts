@@ -1,6 +1,7 @@
 import { readAccessVerdict, type CatalogPrice } from '../../domain/models/CatalogAccess'
 import type { Game } from '../../domain/models/Game'
-import type { GameDto } from '../../shared/contracts/dto/GameDto'
+import type { ForkParent } from '../../domain/models/ForkParent'
+import type { ForkParentDto, GameDto } from '../../shared/contracts/dto/GameDto'
 
 const ABSOLUTE_URL = /^https?:\/\//
 
@@ -28,6 +29,7 @@ export class GameDtoMapper {
       category: game.category,
       categoryLabel: game.categoryLabel,
       imageUrl: this.resolveImageUrl(game, catalogBaseUrl),
+      forkOf: toForkParentDto(game.forkOf),
       installed: game.installed,
       updateAvailable: game.updateAvailable,
       installedVersion: game.installedVersion,
@@ -55,6 +57,22 @@ export class GameDtoMapper {
     if (!game.installed) return false
     if (game.mode === 'web') return game.hostedUrl !== null
     return game.menuEntryPath !== null || game.executablePath !== null
+  }
+}
+
+/** The parent as the window shows it: its name, and the host of the engine it lives on. */
+function toForkParentDto (forkOf: ForkParent | null): ForkParentDto | null {
+  if (forkOf === null) return null
+  return { name: forkOf.name, engineHost: describeEngineHost(forkOf.engine) }
+}
+
+/** An engine URL's host; the text itself where it does not parse as a URL. */
+function describeEngineHost (engine: string): string {
+  try {
+    const host = new URL(engine).host
+    return host.length > 0 ? host : engine
+  } catch {
+    return engine
   }
 }
 

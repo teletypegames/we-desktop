@@ -3,6 +3,7 @@ import {
   asRecord, readOptionalString, readRecord, readString, type JsonRecord
 } from '../../json/JsonRecord'
 import type { CatalogAccess } from '../../../domain/models/CatalogAccess'
+import type { ForkParent } from '../../../domain/models/ForkParent'
 import type {
   CatalogAsset, CatalogDialect, CatalogEntry, CatalogRelease, CatalogSoftware
 } from './CatalogDialect'
@@ -70,7 +71,8 @@ export class SoftwareListCatalogDialect implements CatalogDialect {
       description: readString(software, 'desc').trim(),
       author: readString(software, 'author').trim(),
       category: readCategory(software),
-      imageUrl: readOptionalString(software, 'imageUrl')
+      imageUrl: readOptionalString(software, 'imageUrl'),
+      forkOf: readForkParent(software)
     }
   }
 
@@ -130,4 +132,18 @@ export class SoftwareListCatalogDialect implements CatalogDialect {
 function readCategory (software: JsonRecord): string | null {
   const category = (readOptionalString(software, 'category') ?? '').trim()
   return category.length > 0 ? category : null
+}
+
+/**
+ * The `forkOf` block an engine from 5.6 sends, or null.
+ *
+ * Absent on older engines and null on a title that is no fork; a block without both a
+ * name and an engine names nothing a person could look up, so it reads as none.
+ */
+function readForkParent (software: JsonRecord): ForkParent | null {
+  const forkOf = readRecord(software, 'forkOf')
+  if (forkOf === null) return null
+  const name = (readOptionalString(forkOf, 'name') ?? '').trim()
+  const engine = (readOptionalString(forkOf, 'engine') ?? '').trim()
+  return name.length > 0 && engine.length > 0 ? { name, engine } : null
 }

@@ -15,7 +15,7 @@ import type { SelectedGame } from './SelectedGame'
  * Nor is `category`: it is the catalog's word for the title and is read from the
  * catalog each time, so the file keeps the shape the other store clients write.
  */
-export interface InstalledRecord extends Omit<SelectedGame, 'access' | 'category'> {
+export interface InstalledRecord extends Omit<SelectedGame, 'access' | 'category' | 'forkOf'> {
   /** The unpacked archive's directory; null for a hosted entry, which has none. */
   readonly payload: string | null
   readonly executable: string | null

@@ -14,6 +14,10 @@ import { checkForUpdate } from '../domain/models/ClientRelease'
 import type { CatalogPageProgress } from '../domain/models/CatalogPage'
 import { CatalogClient } from '../infrastructure/engine/CatalogClient'
 import { CatalogSurveyor } from '../infrastructure/engine/CatalogSurveyor'
+import { CatalogVocabulary } from '../infrastructure/engine/CatalogVocabulary'
+import { AccessAwareCatalogDialect } from '../infrastructure/engine/dialects/AccessAwareCatalogDialect'
+import { EngineGameMapper } from '../infrastructure/engine/EngineGameMapper'
+import { PlatformLabels } from '../infrastructure/engine/PlatformLabels'
 import type { CatalogEntry } from '../infrastructure/engine/dialects/CatalogDialect'
 import { NativeStoreCatalogGateway } from '../infrastructure/engine/NativeStoreCatalogGateway'
 import { StoreConfigurationMigrator } from '../infrastructure/engine/StoreConfigurationMigrator'
@@ -72,6 +76,7 @@ class SmokeTest {
     await this.checkPaging()
     await this.checkStatuses()
     this.checkPlatforms()
+    this.checkForkOf()
     await this.checkRegistry()
     await this.checkReleases()
 
@@ -148,7 +153,7 @@ class SmokeTest {
       const pagesRight = seen.join(',') === '2,4,5'
       const wholeRight = Array.isArray(stitched) && stitched.length === titles.length
       const cacheRight = Array.isArray(cachedList) && cachedList.length === titles.length &&
-        cached !== null && cached['api'] === 2 && cached['nextPage'] === null
+        cached !== null && (cached['api'] === 2 || cached['api'] === 3) && cached['nextPage'] === null
       if (pagesRight && wholeRight && cacheRight && fetched.engineVersion.resolved === '1.0' &&
         fetched.engineVersion.match === 'exact') {
         this.reportOk('paging', `3 pages of ${String(perPage)} → ${String(titles.length)} titles, reported at ${seen.join('/')}, ` +
@@ -249,7 +254,7 @@ class SmokeTest {
       const configPath = path.join(home, 'config.json')
       const release = { version: '0.6.1', createdAt: null, assets: [{ kind: 'win_x86', path: 'dosinst-0.6.1-win-x86.zip' }] }
       const entries: CatalogEntry[] = [{
-        software: { name: 'dosinst', title: 'DOSINST', platform: 'dos', status: 'released', description: '', author: '', category: 'tool', imageUrl: null },
+        software: { name: 'dosinst', title: 'DOSINST', platform: 'dos', status: 'released', description: '', author: '', category: 'tool', imageUrl: null, forkOf: null },
         access: null,
         latestRelease: release,
         releaseCandidates: [release]
@@ -276,6 +281,50 @@ class SmokeTest {
       this.reportBad('platforms', describeError(error))
     } finally {
       fs.rmSync(home, { recursive: true, force: true })
+    }
+  }
+
+  /**
+   * The parent of a fork, read from an `api: 3` catalog and carried to the window.
+   *
+   * An engine before 5.6 sends no `forkOf` and a title that is no fork sends null; both,
+   * and a block missing its name, must read as no parent rather than a blank line.
+   */
+  private checkForkOf (): void {
+    try {
+      const software = (name: string, forkOf: unknown): unknown => ({
+        software: { name, title: name, platform: 'tic80', status: 'released', forkOf },
+        releases: []
+      })
+      const entries = new AccessAwareCatalogDialect('1.7').listEntries({
+        api: 3,
+        softwares: [
+          software('hare', { engine: 'https://games.example.org/', name: 'rabbit', version: '1.2.0', repo: null, local: false }),
+          software('rabbit', null),
+          { software: { name: 'old', title: 'Old', platform: 'tic80', status: 'released' }, releases: [] },
+          software('broken', { engine: 'https://games.example.org' })
+        ]
+      })
+      const engineMapper = new EngineGameMapper()
+      const labels = new PlatformLabels({})
+      const vocabulary = new CatalogVocabulary({})
+      const shown = entries.map((entry: CatalogEntry): string => {
+        const game = engineMapper.toUnavailableGame({
+          name: entry.software.name, title: entry.software.title, platform: entry.software.platform,
+          description: '', author: '', category: null, imageUrl: null, version: '', forkOf: entry.software.forkOf,
+          reason: 'noAsset', detail: '', access: null
+        }, labels, vocabulary)
+        const forkOf = this.gameMapper.toDto(game, '').forkOf
+        return forkOf === null ? '-' : `${forkOf.name}@${forkOf.engineHost}`
+      }).join(',')
+
+      if (shown === 'rabbit@games.example.org,-,-,-') {
+        this.reportOk('fork of', 'parent name and engine host read; absent, null and partial blocks read as none')
+      } else {
+        this.reportBad('fork of', shown)
+      }
+    } catch (error: unknown) {
+      this.reportBad('fork of', describeError(error))
     }
   }
 

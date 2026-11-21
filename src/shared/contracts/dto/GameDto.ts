@@ -17,6 +17,13 @@ export type AccessVerdictDto = 'open' | 'entitled' | 'purchasable' | 'signInRequ
 /** Why a title cannot be installed on this machine. */
 export type UnavailableReasonDto = 'platformOff' | 'hostAsset' | 'noAsset' | 'vetoed'
 
+/** The title an entry was forked from, as the window shows it. */
+export interface ForkParentDto {
+  readonly name: string
+  /** The parent engine's host, already taken out of its URL. */
+  readonly engineHost: string
+}
+
 /**
  * A catalog entry as the window needs it.
  *
@@ -41,6 +48,8 @@ export interface GameDto {
   readonly categoryLabel: string | null
   /** Absolute, already resolved against the catalog's base URL. */
   readonly imageUrl: string | null
+  /** Null where the title is no fork, or its engine is too old to say. */
+  readonly forkOf: ForkParentDto | null
   readonly installed: boolean
   readonly updateAvailable: boolean
   readonly installedVersion: string | null

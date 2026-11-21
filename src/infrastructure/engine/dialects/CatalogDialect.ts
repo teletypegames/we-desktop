@@ -1,4 +1,5 @@
 import type { CatalogAccess } from '../../../domain/models/CatalogAccess'
+import type { ForkParent } from '../../../domain/models/ForkParent'
 import type { SupportedWarpEngineVersion } from '../../../domain/models/WarpEngineVersion'
 
 /**
@@ -54,6 +55,8 @@ export interface CatalogSoftware {
   /** The catalog's genre for the title, as published; null where it names none. */
   readonly category: string | null
   readonly imageUrl: string | null
+  /** The title this one was forked from; null where it is no fork or the engine cannot say. */
+  readonly forkOf: ForkParent | null
 }
 
 export interface CatalogRelease {

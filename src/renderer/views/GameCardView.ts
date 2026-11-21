@@ -132,6 +132,11 @@ export class GameCardView {
     const body = createElement('div', 'body')
     body.appendChild(createElement('h2', undefined, game.title))
     body.appendChild(this.createMeta(game, messages))
+    if (game.forkOf !== null) {
+      body.appendChild(createElement('p', 'fork-of', messages.forkOf
+        .replace('%{name}', game.forkOf.name)
+        .replace('%{engine}', game.forkOf.engineHost)))
+    }
     if (game.description.length > 0) {
       body.appendChild(createElement('p', 'desc', game.description))
     }

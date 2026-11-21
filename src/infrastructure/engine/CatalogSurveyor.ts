@@ -141,6 +141,7 @@ export class CatalogSurveyor {
         category: software.category,
         imageUrl: software.imageUrl,
         createdAt: release.createdAt,
+        forkOf: software.forkOf,
         mode,
         access: entry.access
       })
@@ -189,6 +190,7 @@ function toUnavailable (
     category: software.category,
     imageUrl: software.imageUrl,
     version: entry.latestRelease?.version ?? '',
+    forkOf: software.forkOf,
     reason,
     detail
   }
