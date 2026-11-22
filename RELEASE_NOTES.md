@@ -1,3 +1,8 @@
+# WarpEngine Desktop 3.5.1
+
+**The first release in the catalog as `we-desktop`.** The same program as 3.5.0, which
+was published under the old name for the clients that still look for it.
+
 # WarpEngine Desktop 3.5.0
 
 **The WarpEngine Client is now WarpEngine Desktop** (`we-desktop`). This release is the
