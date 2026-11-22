@@ -1,4 +1,4 @@
-# WarpEngine Client — the front door to the npm scripts.
+# WarpEngine Desktop — the front door to the npm scripts.
 #
 # Everything here is a thin wrapper: the app is an Electron project, so npm still
 # does the work. The Makefile exists so the useful sequences have names.
@@ -32,7 +32,7 @@ VERSION := $(shell node -p 'require("./package.json").version')
 STORES_API ?=
 
 # A brand: a name for the window and a store to install first, baked in the same way.
-# Optional, all of it — without BRAND_NAME the build is the generic WarpEngine Client.
+# Optional, all of it — without BRAND_NAME the build is the generic WarpEngine Desktop.
 # BRAND_ID names the appId and the package files, so a branded and a generic client can
 # live on one machine.
 #
@@ -65,7 +65,7 @@ BUILDER_ARGS := $(if $(strip $(REGISTRY_ARGS) $(BRAND_ARGS)),-- $(REGISTRY_ARGS)
         dist dist-mac dist-win dist-linux mac-release clean distclean version
 
 help: ## List available targets
-	@echo "WarpEngine Client $(VERSION) — usage: make <target>"
+	@echo "WarpEngine Desktop $(VERSION) — usage: make <target>"
 	@echo
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'

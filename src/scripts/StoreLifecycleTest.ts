@@ -59,7 +59,7 @@ class StoreLifecycleTest {
   }
 
   public async run (): Promise<number> {
-    console.log('warp-engine-client store lifecycle test')
+    console.log('we-desktop store lifecycle test')
     console.log(`  ..    sandbox: ${this.root}`)
 
     try {

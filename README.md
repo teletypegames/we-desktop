@@ -1,4 +1,4 @@
-# warp-engine-client — the WarpEngine Client app
+# we-desktop — the WarpEngine Desktop app
 
 The client for a WarpEngine store: the catalog as a grid of cards, one click to install
 a title into your own application menu, one to play it, one to remove it. Linux, macOS
@@ -29,7 +29,7 @@ toolchain (TypeScript, ESLint, esbuild, electron-builder) installs with `make se
 ## Install
 
 Grab the package for your machine from the
-[releases](https://git.teletypegames.org/stores/warp-engine-client/releases)
+[releases](https://git.teletypegames.org/stores/we-desktop/releases)
 and open it. On first run, if there is no store on the machine yet, the window
 offers to download one — that is the whole setup.
 
@@ -39,7 +39,7 @@ The build is ad-hoc signed but **not notarised**, so macOS asks before running a
 copy that came from a browser. The reliable way through:
 
 ```sh
-xattr -dr com.apple.quarantine "/Applications/WarpEngine Client.app"
+xattr -dr com.apple.quarantine "/Applications/WarpEngine Desktop.app"
 ```
 
 If macOS offers *Open Anyway* under **System Settings ▸ Privacy & Security** after
@@ -159,7 +159,7 @@ panel — and not a release of this app.
 ## A branded build
 
 A build can carry a **brand**: a name and a store. Without one the client is what this
-README describes — the generic WarpEngine Client, which asks the registry which stores
+README describes — the generic WarpEngine Desktop, which asks the registry which stores
 exist. With one:
 
 ```sh
@@ -176,13 +176,13 @@ BRAND_NAME="Teletype Games Store" BRAND_STORE=https://teletypegames.org npm star
 - the brand is an **alternative default**, not a cage: the side menu still lists every
   store on the machine, and the settings still add and remove them;
 - `BRAND_ID` names the `appId` (`org.teletypegames.warpstore.gui.<id>`), so the two apps
-  can live side by side, and prefixes the package names in place of `WarpEngineClient`;
+  can live side by side, and prefixes the package names in place of `WarpEngineDesktop`;
 - the **registry** is the brand's catalog's own, `BRAND_STORE` + `/api/stores` (WarpEngine 4.2
   serves it, by default listing that catalog alone), so a branded client offers nobody
   else's stores; `STORES_API` still names another one;
 - *Check for updates* reads the brand's catalog for an entry of the package's name
   (`warpEngine.updates` in `package.json` names another catalog or name);
-- the settings' General tab shows *Based on WarpEngine Client 3.0.0*, for support.
+- the settings' General tab shows *Based on WarpEngine Desktop 3.0.0*, for support.
 
 The brand is **data the build supplies**, read by `BuildConfiguration.readBrand()` from
 the package's own `package.json` (`warpEngine.brand`), with the runtime pair winning for a
@@ -356,7 +356,7 @@ the teletypegames.org catalog like any other title, in the `app` category.
 | `version` | `ci-tools` | the version from `package.json`; a tag must match it |
 | `linux` | `build/electron-builder` (`electronuserland/builder:22-wine`) | `npm ci`, `npm run check` (type-check, lint, the smoke test, the store lifecycle test), `npm run build`, the AppImage |
 | `windows` | the same, through Wine | the NSIS installer |
-| `upload`, `publish` | `ci-tools` | `warp-engine-client-<version>-linux-x64.zip`, `…-win-x64.zip` and `metadata.json` into the catalog |
+| `upload`, `publish` | `ci-tools` | `we-desktop-<version>-linux-x64.zip`, `…-win-x64.zip` and `metadata.json` into the catalog |
 
 A release, then:
 
@@ -377,7 +377,7 @@ The Windows installer is **not signed**: Windows will warn about an unknown publ
 until there is a code-signing certificate. Linux packages carry no signature by
 convention.
 
-**Check for updates** reads the catalog (`GET /api/software?q=warp-engine-client`, the
+**Check for updates** reads the catalog (`GET /api/software?q=we-desktop`, the
 entry of exactly that name) and links the download for this machine. The catalog named in
 `warpEngine.updates` is also the one where the client leaves its own entry out of the
 grid: a store does not offer to install itself.

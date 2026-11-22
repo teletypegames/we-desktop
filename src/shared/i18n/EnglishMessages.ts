@@ -5,7 +5,7 @@
  * translation is a compile error rather than a blank label at runtime.
  */
 export const ENGLISH_MESSAGES = {
-  appName: 'WarpEngine Client',
+  appName: 'WarpEngine Desktop',
   refresh: 'Refresh the catalog',
   install: 'Install',
   upgrade: 'Upgrade',
@@ -97,7 +97,7 @@ export const ENGLISH_MESSAGES = {
   updateCheckFailed: 'The release list could not be reached.',
   settings: 'Settings',
   general: 'General',
-  basedOn: 'Based on WarpEngine Client %{version}',
+  basedOn: 'Based on WarpEngine Desktop %{version}',
   updates: 'Updates',
   close: 'Close',
   addStoreFromList: 'Add a store from the list',

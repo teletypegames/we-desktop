@@ -4,7 +4,7 @@ import { HttpStatusError } from './HttpStatusError'
 
 const REQUEST_TIMEOUT_MS = 60_000
 const MAX_REDIRECTS = 5
-const USER_AGENT = 'warp-engine-client'
+const USER_AGENT = 'we-desktop'
 
 /**
  * GET a URL as text, following redirects.

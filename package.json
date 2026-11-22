@@ -1,11 +1,11 @@
 {
-  "name": "warp-engine-client",
-  "productName": "WarpEngine Client",
-  "version": "3.4.1",
+  "name": "we-desktop",
+  "productName": "WarpEngine Desktop",
+  "version": "3.5.0",
   "description": "Graphical client for WarpEngine stores: install a catalog into your own application menu.",
   "license": "MIT",
   "author": "Teletype Games <games@teletype.hu>",
-  "homepage": "https://git.teletypegames.org/stores/warp-engine-client",
+  "homepage": "https://git.teletypegames.org/stores/we-desktop",
   "main": "build/main/main.js",
   "engines": {
     "node": ">=22"
@@ -38,7 +38,7 @@
   },
   "build": {
     "appId": "org.teletypegames.warpstore.gui",
-    "productName": "WarpEngine Client",
+    "productName": "WarpEngine Desktop",
     "files": [
       "build/**/*",
       "package.json"
@@ -49,11 +49,11 @@
         "dmg",
         "zip"
       ],
-      "artifactName": "WarpEngineClient-${version}-${arch}-mac.${ext}",
+      "artifactName": "WarpEngineDesktop-${version}-${arch}-mac.${ext}",
       "icon": "resources/icon.icns"
     },
     "dmg": {
-      "artifactName": "WarpEngineClient-${version}-${arch}.${ext}"
+      "artifactName": "WarpEngineDesktop-${version}-${arch}.${ext}"
     },
     "win": {
       "target": [
@@ -63,10 +63,10 @@
       "icon": "resources/icon.ico"
     },
     "nsis": {
-      "artifactName": "WarpEngineClient-Setup-${version}-${arch}.${ext}"
+      "artifactName": "WarpEngineDesktop-Setup-${version}-${arch}.${ext}"
     },
     "portable": {
-      "artifactName": "WarpEngineClient-Portable-${version}-${arch}.${ext}"
+      "artifactName": "WarpEngineDesktop-Portable-${version}-${arch}.${ext}"
     },
     "linux": {
       "category": "Game",
@@ -77,7 +77,7 @@
       "icon": "resources/icons"
     },
     "appImage": {
-      "artifactName": "WarpEngineClient-${version}-${arch}.${ext}"
+      "artifactName": "WarpEngineDesktop-${version}-${arch}.${ext}"
     },
     "afterPack": "scripts/after-pack.js",
     "directories": {

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-warp-engine-client: the desktop store (Electron). `README.md` is the user and
+we-desktop: the desktop store (Electron). `README.md` is the user and
 build guide; `STRUCTURE.md` is this repo's map — layers, the tree, every pattern
 in use, naming and type rules — read it before adding anything:
 

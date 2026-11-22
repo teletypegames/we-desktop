@@ -2,3 +2,6 @@
 # (version → linux → windows → upload → publish). Preview it with:
 #   curl "https://teletypegames.org/build/config?platform=electron"
 platform: electron
+
+# The last release under the old catalog name, for the clients that look for it.
+name: warp-engine-client

@@ -69,7 +69,7 @@ class SmokeTest {
   private readonly gameMapper = new GameDtoMapper()
 
   public async run (): Promise<number> {
-    console.log('warp-engine-client smoke test')
+    console.log('we-desktop smoke test')
 
     this.checkMessages()
     this.checkBrand()
@@ -252,9 +252,9 @@ class SmokeTest {
     try {
       const files = new StoreFileSystem('platforms-store', ignore)
       const configPath = path.join(home, 'config.json')
-      const release = { version: '0.6.1', createdAt: null, assets: [{ kind: 'win_x86', path: 'dosinst-0.6.1-win-x86.zip' }] }
+      const release = { version: '0.7.0', createdAt: null, assets: [{ kind: 'win_x86', path: 'we-dos-0.7.0-win-x86.zip' }] }
       const entries: CatalogEntry[] = [{
-        software: { name: 'dosinst', title: 'DOSINST', platform: 'dos', status: 'released', description: '', author: '', category: 'tool', imageUrl: null, forkOf: null },
+        software: { name: 'we-dos', title: 'WEDOS', platform: 'dos', status: 'released', description: '', author: '', category: 'tool', imageUrl: null, forkOf: null },
         access: null,
         latestRelease: release,
         releaseCandidates: [release]

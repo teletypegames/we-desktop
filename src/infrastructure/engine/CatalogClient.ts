@@ -74,7 +74,7 @@ export class CatalogClient {
     bearerToken: () => string | null = (): null => null
   ) {
     this.http = new StoreHttpClient({
-      userAgent: `warp-engine-client/${CLIENT_VERSION} (${configuration.store.id})`,
+      userAgent: `we-desktop/${CLIENT_VERSION} (${configuration.store.id})`,
       timeout: configuration.behavior.timeout,
       insecure: configuration.behavior.insecure,
       bearerToken

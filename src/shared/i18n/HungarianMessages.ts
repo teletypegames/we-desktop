@@ -5,7 +5,7 @@ import type { MessageBundle } from './MessageBundle'
  * arrives from the store as it was published.
  */
 export const HUNGARIAN_MESSAGES: MessageBundle = {
-  appName: 'WarpEngine Client',
+  appName: 'WarpEngine Desktop',
   refresh: 'Katalógus frissítése',
   install: 'Telepítés',
   upgrade: 'Frissítés',
@@ -97,7 +97,7 @@ export const HUNGARIAN_MESSAGES: MessageBundle = {
   updateCheckFailed: 'A kiadások listája nem érhető el.',
   settings: 'Beállítások',
   general: 'Általános',
-  basedOn: 'WarpEngine Client %{version} alapon',
+  basedOn: 'WarpEngine Desktop %{version} alapon',
   updates: 'Frissítések',
   close: 'Bezárás',
   addStoreFromList: 'Bolt hozzáadása a listából',

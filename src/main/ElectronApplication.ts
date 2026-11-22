@@ -7,7 +7,12 @@ import { SelfTestRunner } from './diagnostics/SelfTestRunner'
 
 const SELFTEST_FLAG = '--selftest'
 const SELFTEST_USER_DATA_DIRECTORY = 'warpstore-gui-selftest'
-const PRODUCT_NAME = 'WarpEngine Client'
+const PRODUCT_NAME = 'WarpEngine Desktop'
+// Electron names the user-data directory after the product. The generic client keeps
+// the directory it had before it was renamed, so installed copies keep their settings.
+// Tokens are another matter: the keychain entry follows the app name, so those are
+// read as missing once and the user signs in again.
+const GENERIC_USER_DATA_DIRECTORY = 'WarpEngine Client'
 
 /**
  * The application's lifecycle.
@@ -41,9 +46,14 @@ export class ElectronApplication {
     // this the second process exits silently with status 0, which reads as a pass.
     if (this.selfTest) {
       this.app.setPath('userData', path.join(this.app.getPath('temp'), SELFTEST_USER_DATA_DIRECTORY))
-    } else if (!this.app.requestSingleInstanceLock()) {
-      this.app.quit()
-      return
+    } else {
+      if (this.container.brand === null) {
+        this.app.setPath('userData', path.join(this.app.getPath('appData'), GENERIC_USER_DATA_DIRECTORY))
+      }
+      if (!this.app.requestSingleInstanceLock()) {
+        this.app.quit()
+        return
+      }
     }
 
     this.container.registerIpc(this.ipc)

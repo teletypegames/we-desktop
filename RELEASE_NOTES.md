@@ -1,3 +1,11 @@
+# WarpEngine Desktop 3.5.0
+
+**The WarpEngine Client is now WarpEngine Desktop** (`we-desktop`). This release is the
+last one in the catalog under the old name: install it, and from then on the update check
+looks for `we-desktop`. The settings carry over; a store you signed in to asks you to sign
+in once more. On Linux the new package sits next to the old one: `apt remove
+warp-engine-client` removes it.
+
 # WarpEngine Client 3.4.1
 
 **Check for updates finds the client in the catalog.** A catalog entry carries the title

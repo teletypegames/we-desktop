@@ -70,5 +70,5 @@ export class AccountIpcController {
  */
 function clientName (): string {
   const hostname = os.hostname()
-  return hostname.length > 0 ? `WarpEngine Client (${hostname})` : 'WarpEngine Client'
+  return hostname.length > 0 ? `WarpEngine Desktop (${hostname})` : 'WarpEngine Desktop'
 }
