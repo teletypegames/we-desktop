@@ -7,6 +7,7 @@ export interface PickedRelease {
   readonly assetName: string
   readonly kind: string
   readonly assetPath: string
+  readonly launch: boolean
 }
 
 /** `/file/blessingofra-2.0.0.prg` -> `blessingofra-2.0.0.prg`. */
@@ -46,7 +47,8 @@ export function pickRelease (
           createdAt: release.createdAt,
           assetName,
           kind,
-          assetPath: asset.path
+          assetPath: asset.path,
+          launch: asset.launch
         }
       }
     }

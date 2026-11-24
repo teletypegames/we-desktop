@@ -11,6 +11,8 @@ export const HUNGARIAN_MESSAGES: MessageBundle = {
   upgrade: 'Frissítés',
   play: 'Indítás',
   open: 'Megnyitás',
+  openFolder: 'Mappa megnyitása',
+  downloadOnlyHint: 'Parancssori program: terminálból futtasd a mappájában',
   uninstall: 'Eltávolítás',
   reinstall: 'Újratelepítés',
   moreActions: 'További műveletek',

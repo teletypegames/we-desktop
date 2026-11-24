@@ -54,6 +54,8 @@ export interface GameDto {
   readonly updateAvailable: boolean
   readonly installedVersion: string | null
   readonly launchable: boolean
+  /** True for a download-only title: its action opens the folder it was installed into. */
+  readonly downloadOnly: boolean
   /** False for a title this machine cannot install; it is listed all the same. */
   readonly installable: boolean
   readonly unavailableReason: UnavailableReasonDto | null

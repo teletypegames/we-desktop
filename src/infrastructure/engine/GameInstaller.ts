@@ -111,6 +111,10 @@ export class GameInstaller {
       if (previous !== null && isStillInstalled(previous, game, payloadDirectory)) {
         executable = previous.executable
         executableKind = previous.executableKind
+      } else if (!game.launch) {
+        const size = await this.payloads.unpack(game, payloadDirectory)
+        changed = true
+        this.log(`installed ${game.name} ${game.version} (${String(size)} bytes, download only) -> ${payloadDirectory}`)
       } else {
         const size = await this.payloads.unpack(game, payloadDirectory)
         changed = true
@@ -142,7 +146,7 @@ export class GameInstaller {
       menuEntry: null,
       url
     }
-    const menuEntry = this.launchers.writeLauncher(layout, withoutMenu)
+    const menuEntry = game.launch ? this.launchers.writeLauncher(layout, withoutMenu) : null
     if ((previous?.menuEntry ?? null) !== menuEntry) changed = true
 
     return { record: { ...withoutMenu, menuEntry }, changed }
@@ -192,15 +196,16 @@ export class GameInstaller {
  * All four conditions matter: the same asset, a payload directory that exists, a
  * recorded executable, and that executable still on disk. A user who deleted the
  * folder by hand should get a reinstall rather than a menu entry that does nothing.
+ * A download-only install has no executable: its folder is all there is to check.
  */
 function isStillInstalled (
   previous: InstalledRecord,
   game: SelectedGame,
   payloadDirectory: string
 ): boolean {
-  return previous.asset === game.asset &&
-    fs.existsSync(payloadDirectory) &&
-    previous.executable !== null &&
+  if (previous.asset !== game.asset || !fs.existsSync(payloadDirectory)) return false
+  if (!game.launch) return true
+  return previous.executable !== null &&
     fs.existsSync(previous.executable)
 }
 

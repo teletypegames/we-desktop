@@ -11,6 +11,8 @@ export const ENGLISH_MESSAGES = {
   upgrade: 'Upgrade',
   play: 'Play',
   open: 'Open',
+  openFolder: 'Open folder',
+  downloadOnlyHint: 'A command-line program: run it from a terminal in its folder',
   uninstall: 'Uninstall',
   reinstall: 'Reinstall',
   moreActions: 'More actions',

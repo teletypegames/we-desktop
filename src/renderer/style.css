@@ -432,6 +432,12 @@ body.nav-closed .side { margin-left: calc(-1 * var(--side-width)); }
   color: var(--ink-dim);
   overflow-wrap: anywhere;
 }
+.download-only {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-dim);
+  font-style: italic;
+}
 .desc {
   margin: 0;
   font-size: 12.5px;

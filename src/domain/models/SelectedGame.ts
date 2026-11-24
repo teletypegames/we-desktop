@@ -21,6 +21,11 @@ export interface SelectedGame {
    * build is a hosted directory, and the entry is a link to it.
    */
   readonly assetPath: string
+  /**
+   * False for a download-only asset (a command-line program): it is unpacked, but gets
+   * no menu entry and is never started — opening it shows its folder.
+   */
+  readonly launch: boolean
   readonly title: string
   readonly description: string
   readonly author: string

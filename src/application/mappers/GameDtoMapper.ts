@@ -34,6 +34,7 @@ export class GameDtoMapper {
       updateAvailable: game.updateAvailable,
       installedVersion: game.installedVersion,
       launchable: this.isLaunchable(game),
+      downloadOnly: game.downloadOnly,
       installable: game.installable,
       unavailableReason: game.unavailableReason,
       unavailableDetail: game.unavailableDetail,
@@ -56,6 +57,7 @@ export class GameDtoMapper {
   private isLaunchable (game: Game): boolean {
     if (!game.installed) return false
     if (game.mode === 'web') return game.hostedUrl !== null
+    if (game.downloadOnly) return game.payloadPath !== null
     return game.menuEntryPath !== null || game.executablePath !== null
   }
 }

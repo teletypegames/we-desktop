@@ -135,6 +135,7 @@ export class CatalogSurveyor {
         version: release.version,
         asset: release.assetName,
         assetPath: release.assetPath,
+        launch: release.launch,
         title: software.title,
         description: software.description,
         author: software.author,

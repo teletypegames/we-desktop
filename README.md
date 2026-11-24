@@ -261,6 +261,12 @@ included. **Remove** takes a title back out. Each card says whether it is
 build the catalog serves rather than packages, so its entry opens a page and needs
 the network.
 
+A command-line program (an asset the catalog marks `launch: false`, such as the
+`golang` platform's `cli_*` builds) is installed like any native title but gets no menu
+entry and is never started: its button is **Open folder**, and the card says to run it
+from a terminal there. A launchable build of the same title is preferred where there is
+one.
+
 **The catalog arrives a page at a time, and the grid draws as it comes.** WarpEngine
 0.13 pages `GET /api/software`; the client reads every page in turn and shows each one
 as it lands, with the bar counting titles until the last page. The listing is complete

@@ -43,6 +43,10 @@ export interface Game {
   readonly installedVersion: string | null
   readonly menuEntryPath: string | null
   readonly executablePath: string | null
+  /** True for a download-only title: installed into a folder, never started. */
+  readonly downloadOnly: boolean
+  /** The unpacked folder of an installed native title; null otherwise. */
+  readonly payloadPath: string | null
   readonly hostedUrl: string | null
   /**
    * False for a title this machine cannot install. It is still listed: a catalog that

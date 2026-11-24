@@ -108,14 +108,14 @@ export const DEFAULT_STORE_CONFIGURATION: StoreConfiguration = {
       // and `mac_x64` last, because that one needs Rosetta.
       [APP_MODE]: {
         kind: {
-          'linux-x86_64': 'linux_x64',
-          'linux-aarch64': 'linux_arm64',
+          'linux-x86_64': ['linux_x64', 'cli_linux_x64'],
+          'linux-aarch64': ['linux_arm64', 'cli_linux_arm64'],
           'linux-armhf': 'linux_armhf',
           'linux-x86': 'linux_x86',
-          'windows-x86_64': ['win_x64', 'win_x86'],
+          'windows-x86_64': ['win_x64', 'win_x86', 'cli_win_x64'],
           'windows-x86': 'win_x86',
-          'darwin-aarch64': ['mac_universal', 'mac_arm64', 'mac_x64'],
-          'darwin-x86_64': ['mac_universal', 'mac_x64']
+          'darwin-aarch64': ['mac_universal', 'mac_arm64', 'mac_x64', 'cli_mac_arm64', 'cli_mac_x64'],
+          'darwin-x86_64': ['mac_universal', 'mac_x64', 'cli_mac_x64']
         },
         extension: '.zip'
       },

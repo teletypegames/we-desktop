@@ -22,6 +22,11 @@ export class ElectronGameLauncher implements GameLauncher {
       return true
     }
 
+    if (game.downloadOnly) {
+      if (game.payloadPath === null || !fs.existsSync(game.payloadPath)) return false
+      return await this.shell.openPath(game.payloadPath) === ''
+    }
+
     const target = game.menuEntryPath ?? game.executablePath
     if (target === null || !fs.existsSync(target)) return false
 

@@ -140,6 +140,9 @@ export class GameCardView {
     if (game.description.length > 0) {
       body.appendChild(createElement('p', 'desc', game.description))
     }
+    if (game.downloadOnly) {
+      body.appendChild(createElement('p', 'download-only', messages.downloadOnlyHint))
+    }
     body.appendChild(this.createActions(game, messages, busy))
     return body
   }
@@ -245,7 +248,8 @@ export class GameCardView {
   private createPrimary (game: GameDto, messages: MessageBundle, busy: boolean, compact: boolean): HTMLElement {
     const primary = createElement('button', compact ? 'btn btn-primary btn-tiny' : 'btn btn-primary')
     if (game.installed) {
-      primary.textContent = game.mode === 'web' ? messages.open : messages.play
+      primary.textContent = game.downloadOnly ? messages.openFolder : game.mode === 'web' ? messages.open : messages.play
+      if (game.downloadOnly) primary.title = messages.downloadOnlyHint
       primary.disabled = busy || !game.launchable
       primary.addEventListener('click', (): void => { this.callbacks.onLaunch(game.name) })
       return primary

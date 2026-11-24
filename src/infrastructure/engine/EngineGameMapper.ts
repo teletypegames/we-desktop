@@ -42,6 +42,8 @@ export class EngineGameMapper {
       installedVersion: record?.version ?? null,
       menuEntryPath: record?.menuEntry ?? null,
       executablePath: record?.executable ?? null,
+      downloadOnly: !game.launch,
+      payloadPath: record?.payload ?? null,
       // The catalog's own play address wins where it gives one: a store that gates its
       // web builds serves them from a page that knows how to ask somebody to sign in,
       // and the raw /file/ directory under it does not.
@@ -81,6 +83,8 @@ export class EngineGameMapper {
       installedVersion: null,
       menuEntryPath: null,
       executablePath: null,
+      downloadOnly: false,
+      payloadPath: null,
       hostedUrl: null,
       installable: false,
       unavailableReason: entry.reason,

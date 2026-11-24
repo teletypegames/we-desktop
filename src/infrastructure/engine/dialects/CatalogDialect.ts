@@ -68,4 +68,6 @@ export interface CatalogRelease {
 export interface CatalogAsset {
   readonly kind: string
   readonly path: string
+  /** False where the catalog marks the asset download only: installed, never started. */
+  readonly launch: boolean
 }

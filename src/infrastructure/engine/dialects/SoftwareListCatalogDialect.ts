@@ -111,20 +111,24 @@ export class SoftwareListCatalogDialect implements CatalogDialect {
   }
 
   protected readRelease (release: JsonRecord): CatalogRelease {
-    const assets: CatalogAsset[] = []
-    const listed = release['assets']
-    if (Array.isArray(listed)) {
-      for (const item of listed) {
-        const asset = asRecord(item)
-        if (asset === null) continue
-        assets.push({ kind: readString(asset, 'kind'), path: readString(asset, 'path') })
-      }
-    }
     return {
       version: readString(release, 'version'),
       createdAt: readOptionalString(release, 'createdAt'),
-      assets
+      assets: this.readAssets(release)
     }
+  }
+
+  /** The release's assets; one the catalog marks `launch: false` is download only. */
+  public readAssets (release: JsonRecord): CatalogAsset[] {
+    const assets: CatalogAsset[] = []
+    const listed = release['assets']
+    if (!Array.isArray(listed)) return assets
+    for (const item of listed) {
+      const asset = asRecord(item)
+      if (asset === null) continue
+      assets.push({ kind: readString(asset, 'kind'), path: readString(asset, 'path'), launch: asset['launch'] !== false })
+    }
+    return assets
   }
 }
 

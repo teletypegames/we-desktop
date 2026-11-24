@@ -76,6 +76,7 @@ class SmokeTest {
     await this.checkPaging()
     await this.checkStatuses()
     this.checkPlatforms()
+    this.checkDownloadOnly()
     this.checkForkOf()
     await this.checkRegistry()
     await this.checkReleases()
@@ -252,7 +253,7 @@ class SmokeTest {
     try {
       const files = new StoreFileSystem('platforms-store', ignore)
       const configPath = path.join(home, 'config.json')
-      const release = { version: '0.7.0', createdAt: null, assets: [{ kind: 'win_x86', path: 'we-dos-0.7.0-win-x86.zip' }] }
+      const release = { version: '0.7.0', createdAt: null, assets: [{ kind: 'win_x86', path: 'we-dos-0.7.0-win-x86.zip', launch: true }] }
       const entries: CatalogEntry[] = [{
         software: { name: 'we-dos', title: 'WEDOS', platform: 'dos', status: 'released', description: '', author: '', category: 'tool', imageUrl: null, forkOf: null },
         access: null,
@@ -279,6 +280,42 @@ class SmokeTest {
       }
     } catch (error: unknown) {
       this.reportBad('platforms', describeError(error))
+    } finally {
+      fs.rmSync(home, { recursive: true, force: true })
+    }
+  }
+
+  /**
+   * A download-only asset (`launch: false`, a command-line program) is picked where the
+   * host has no launchable build, and the title it makes is never started: its action
+   * opens the folder it was unpacked into.
+   */
+  private checkDownloadOnly (): void {
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'warp-smoke-download-only-'))
+    const ignore = (_line: string): void => { void _line }
+    try {
+      const files = new StoreFileSystem('download-only-store', ignore)
+      const configPath = path.join(home, 'config.json')
+      fs.writeFileSync(configPath, JSON.stringify({ store: { id: 'd' } }))
+      const record = { assets: [{ kind: 'cli_linux_x64', path: '/file/c64tui/0.1.0/c64tui-0.1.0-linux-x64-cli.zip', launch: false }] }
+      const dialect = new AccessAwareCatalogDialect('1.7')
+      const release = { version: '0.1.0', createdAt: null, assets: dialect.readAssets(record) }
+      const entries: CatalogEntry[] = [{
+        software: { name: 'c64tui', title: 'c64tui', platform: 'golang', status: 'development', description: '', author: '', category: 'tool', imageUrl: null, forkOf: null },
+        access: null,
+        latestRelease: release,
+        releaseCandidates: [release]
+      }]
+      const configuration = new StoreConfigurationReader(files).readConfiguration(configPath)
+      const game = new CatalogSurveyor(configuration, ignore)
+        .survey(entries, { operatingSystem: 'linux', architecture: 'x86_64' }, ['development']).games[0]
+      if (game?.kind === 'cli_linux_x64' && !game.launch) {
+        this.reportOk('download only', 'a launch: false asset installs as a download-only title')
+      } else {
+        this.reportBad('download only', game === undefined ? 'no title picked' : `${game.kind} launch ${String(game.launch)}`)
+      }
+    } catch (error: unknown) {
+      this.reportBad('download only', describeError(error))
     } finally {
       fs.rmSync(home, { recursive: true, force: true })
     }
