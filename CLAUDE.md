@@ -7,5 +7,5 @@ in use, naming and type rules — read it before adding anything:
 @STRUCTURE.md
 
 The rules shared with the other WarpEngine TypeScript tools are the
-`typescript/layered` styleguide of the ttg-styleguide plugin (tools/ttg-marketplace),
+`typescript/layered` styleguide of the ttg plugin (tools/ttg-marketplace),
 switched on in `.styleguide.json`. `make check` (typecheck, lint, tests) is the gate.
