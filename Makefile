@@ -61,7 +61,7 @@ BUILDER_ARGS := $(if $(strip $(REGISTRY_ARGS) $(BRAND_ARGS)),-- $(REGISTRY_ARGS)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help setup node-check build typecheck lint lint-fix check start smoke uitest storetest icons test \
+.PHONY: help setup node-check build typecheck lint lint-fix check start run smoke uitest storetest icons test \
         dist dist-mac dist-win dist-linux mac-release clean distclean version
 
 help: ## List available targets
@@ -102,6 +102,8 @@ check: typecheck lint test ## Type-check, lint, and run every test suite
 start: ## Run the app against whatever store is installed
 	npm start
 
+run: start ## The same as start (the target name every WarpEngine project has)
+
 smoke: ## Drive the store bridge with no window at all
 	npm run smoke
 
@@ -128,7 +130,7 @@ dist-win: node-check ## Package for Windows
 dist-linux: node-check ## Package for Linux
 	npm run dist:linux $(BUILDER_ARGS)
 
-mac-release: node-check ## Build the macOS package and add it to the catalog release (WARP_TOKEN)
+mac-release: node-check ## Build the macOS package and add it to the catalog release (WARP_TOKEN, warp-engine CLI)
 	$(SCRIPTS)/upload-mac.sh
 
 clean: ## Remove the compiled output and the built packages

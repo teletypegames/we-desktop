@@ -370,7 +370,10 @@ A release, then:
    commit, `git tag vX.Y.Z && git push origin vX.Y.Z`);
 2. the pipeline builds Linux and Windows and publishes them;
 3. on a Mac, `WARP_TOKEN=<application token> make mac-release` builds the macOS zip,
-   uploads it as `…-mac-<arch>.zip` and publishes the release again with it.
+   uploads it as `…-mac-<arch>.zip` and publishes the release again with it, through
+   `warp-engine release upload` / `release publish` of the
+   [WarpEngine CLI](https://wiki.teletypegames.org/godoc/warp-engine-cli/latest/cmd/warp-engine/)
+   (install it once: `curl -fsSL https://git.teletypegames.org/engines/warp-engine-cli/raw/branch/master/install.sh | sh`).
    **macOS stays a local build**: Apple's toolchain and signing only exist on a Mac.
 
 The window test (`make uitest`) is local: it needs a display.
