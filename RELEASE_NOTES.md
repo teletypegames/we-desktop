@@ -1,3 +1,8 @@
+# WarpEngine Desktop 3.6.1
+
+**Source documentation in the catalog.** The release carries the TypeDoc reference of the
+source (Open on the catalog page). The program is the same as 3.6.0.
+
 # WarpEngine Desktop 3.5.1
 
 **The first release in the catalog as `we-desktop`.** The same program as 3.5.0, which
