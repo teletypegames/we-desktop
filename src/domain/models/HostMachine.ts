@@ -13,8 +13,9 @@ export interface HostMachine {
 /**
  * A config value that may differ per machine.
  *
- * A plain value is the same everywhere — that is how a `cartridge` is described,
- * being data for an emulator. Where it differs, the value is a map keyed by host.
+ * A plain value is the same everywhere — that is how a `package` is described,
+ * being data for an emulator. (An engine before WECP api 6 calls that kind `cartridge`;
+ * see `canonicalAssetKind`.) Where it differs, the value is a map keyed by host.
  */
 export type HostSpecific<TValue> = TValue | Readonly<Record<string, TValue>>
 

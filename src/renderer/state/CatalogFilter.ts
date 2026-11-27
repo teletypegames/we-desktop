@@ -59,7 +59,7 @@ export function matchesFilter (game: GameDto, filter: CatalogFilter): boolean {
   if (!matchesGroup(game, filter.group)) return false
   if (filter.platform !== null && game.platform !== filter.platform) return false
   // A title this machine cannot install has no mode worth filtering on: the engine
-  // sends none, and counting it as native would put a C64 cartridge under "native".
+  // sends none, and counting it as native would put a C64 `package` under "native".
   if (filter.mode !== null && !(game.installable && game.mode === filter.mode)) return false
   if (filter.category !== null && game.category !== filter.category) return false
   if (!matchesQuery(game, filter.query)) return false

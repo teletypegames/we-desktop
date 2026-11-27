@@ -77,6 +77,7 @@ class SmokeTest {
     await this.checkStatuses()
     this.checkPlatforms()
     this.checkDownloadOnly()
+    this.checkPackageKind()
     this.checkForkOf()
     await this.checkRegistry()
     await this.checkReleases()
@@ -316,6 +317,50 @@ class SmokeTest {
       }
     } catch (error: unknown) {
       this.reportBad('download only', describeError(error))
+    } finally {
+      fs.rmSync(home, { recursive: true, force: true })
+    }
+  }
+
+  /**
+   * `cartridge` and `package` are one kind (WECP api 6).
+   *
+   * An engine before 6.0 sends `cartridge` and a store config written before it asks for
+   * `cartridge`; the dialect and the config reader both turn it into `package`, so every
+   * pairing of an old and a new side picks the same asset.
+   */
+  private checkPackageKind (): void {
+    const home = fs.mkdtempSync(path.join(os.tmpdir(), 'warp-smoke-package-kind-'))
+    const ignore = (_line: string): void => { void _line }
+    try {
+      const files = new StoreFileSystem('package-kind-store', ignore)
+      const configPath = path.join(home, 'config.json')
+      const dialect = new AccessAwareCatalogDialect('1.7')
+      const results: string[] = []
+      for (const assetKind of ['cartridge', 'package']) {
+        for (const configKind of ['cartridge', 'package', ['cartridge']]) {
+          const record = { assets: [{ kind: assetKind, path: '/file/blessingofra/2.2.0/blessingofra-2.2.0.prg', launch: true }] }
+          const release = { version: '2.2.0', createdAt: null, assets: dialect.readAssets(record) }
+          const entries: CatalogEntry[] = [{
+            software: { name: 'blessingofra', title: 'Blessing of Ra', platform: 'c64', status: 'released', description: '', author: '', category: null, imageUrl: null, forkOf: null },
+            access: null,
+            latestRelease: release,
+            releaseCandidates: [release]
+          }]
+          fs.writeFileSync(configPath, JSON.stringify({ store: { id: 'k' }, install: { modes: ['app'], app: { kind: configKind, ext: '' } } }))
+          const configuration = new StoreConfigurationReader(files).readConfiguration(configPath)
+          const game = new CatalogSurveyor(configuration, ignore)
+            .survey(entries, { operatingSystem: 'linux', architecture: 'x86_64' }, ['released']).games[0]
+          results.push(game?.kind ?? 'nothing')
+        }
+      }
+      if (results.every((kind: string): boolean => kind === 'package')) {
+        this.reportOk('package kind', 'cartridge (api < 6) and package read as one kind, in the catalog and the config')
+      } else {
+        this.reportBad('package kind', results.join(', '))
+      }
+    } catch (error: unknown) {
+      this.reportBad('package kind', describeError(error))
     } finally {
       fs.rmSync(home, { recursive: true, force: true })
     }

@@ -1,3 +1,10 @@
+# WarpEngine Desktop 4.0.0
+
+**Ready for WarpEngine 6.0.** The asset kind of emulator data is `package` from WECP
+api 6 on; an older engine calls it `cartridge`. The client reads both as `package`, in
+the catalog and in a store's `config.json`, so it works with an old engine and a new one
+alike.
+
 # WarpEngine Desktop 3.6.1
 
 **Source documentation in the catalog.** The release carries the TypeDoc reference of the

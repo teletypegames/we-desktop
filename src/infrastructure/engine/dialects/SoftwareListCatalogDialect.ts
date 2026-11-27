@@ -1,3 +1,4 @@
+import { canonicalAssetKind } from '../../../domain/models/AssetKind'
 import type { SupportedWarpEngineVersion } from '../../../domain/models/WarpEngineVersion'
 import {
   asRecord, readOptionalString, readRecord, readString, type JsonRecord
@@ -118,7 +119,11 @@ export class SoftwareListCatalogDialect implements CatalogDialect {
     }
   }
 
-  /** The release's assets; one the catalog marks `launch: false` is download only. */
+  /**
+   * The release's assets; one the catalog marks `launch: false` is download only.
+   *
+   * The kind is read by its WECP api 6 name, so an older engine's `cartridge` is `package`.
+   */
   public readAssets (release: JsonRecord): CatalogAsset[] {
     const assets: CatalogAsset[] = []
     const listed = release['assets']
@@ -126,7 +131,7 @@ export class SoftwareListCatalogDialect implements CatalogDialect {
     for (const item of listed) {
       const asset = asRecord(item)
       if (asset === null) continue
-      assets.push({ kind: readString(asset, 'kind'), path: readString(asset, 'path'), launch: asset['launch'] !== false })
+      assets.push({ kind: canonicalAssetKind(readString(asset, 'kind')), path: readString(asset, 'path'), launch: asset['launch'] !== false })
     }
     return assets
   }

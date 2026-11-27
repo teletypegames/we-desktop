@@ -1,3 +1,4 @@
+import { canonicalAssetKind } from '../../domain/models/AssetKind'
 import type { HostSpecific } from '../../domain/models/HostMachine'
 import {
   APP_MODE, DEFAULT_STORE_CONFIGURATION, WEB_MODE,
@@ -119,18 +120,26 @@ function readBehavior (record: JsonRecord): BehaviorConfiguration {
   }
 }
 
-/** `"linux_x64"`, `["win_x64", "win_x86"]`, or either of those keyed by host. */
+/**
+ * `"linux_x64"`, `["win_x64", "win_x86"]`, or either of those keyed by host.
+ *
+ * Every kind is read by its WECP api 6 name: a config's `cartridge` is `package`.
+ */
 function readAssetKind (value: unknown): HostSpecific<string | readonly string[]> | null {
-  if (typeof value === 'string') return value
-  if (Array.isArray(value)) return readStrings(value)
+  if (typeof value === 'string') return canonicalAssetKind(value)
+  if (Array.isArray(value)) return readKinds(value)
   const record = asRecord(value)
   if (record === null) return null
   const map: Record<string, string | readonly string[]> = {}
   for (const [key, entry] of Object.entries(record)) {
-    if (typeof entry === 'string') map[key] = entry
-    else if (Array.isArray(entry)) map[key] = readStrings(entry)
+    if (typeof entry === 'string') map[key] = canonicalAssetKind(entry)
+    else if (Array.isArray(entry)) map[key] = readKinds(entry)
   }
   return map
+}
+
+function readKinds (values: readonly unknown[]): readonly string[] {
+  return readStrings(values).map((kind: string): string => canonicalAssetKind(kind))
 }
 
 function readHostSpecificString (value: unknown): HostSpecific<string> | null {

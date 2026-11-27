@@ -57,7 +57,7 @@ export class PayloadInstaller {
    * A program named after the game wins outright: an archive that ships an emulator
    * next to a launcher script — the C64 and Plus/4 bundles carry yapeSDL and a
    * `<name>` / `<name>.bat` / `<name>.command` that sets the machine and autostarts
-   * the cartridge — names the launcher after the game precisely so that this is the
+   * the program — names the launcher after the game precisely so that this is the
    * thing to run, and neither the emulator binary nor its `.app` is. Then a `bundle`,
    * a macOS `.app` the archive already contained — a LÖVE or Godot build ships one —
    * which *is* the launcher rather than something to wrap. Otherwise the answer is a
